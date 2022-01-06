@@ -23,7 +23,10 @@ jobs:
       
       - run:
           name: Build app
-          command: ls -l
+          command: |
+            mkdir -p workdir
+            go mod init httpserver
+            go build -o workdir/httpserver .
           
       - run:
           name: Validate server is working
