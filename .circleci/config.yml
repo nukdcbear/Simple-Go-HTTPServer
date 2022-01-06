@@ -40,6 +40,8 @@ jobs:
           command: |
             sleep 5
             curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
+            curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out
+            curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out
           
       - store_artifacts: # upload test summary for display in Artifacts
           path: /tmp/test-results
