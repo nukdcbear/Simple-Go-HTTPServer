@@ -27,6 +27,11 @@ jobs:
             mkdir -p workdir
             go mod init httpserver
             go build -o workdir/httpserver .
+      
+      - run:
+          name: Start service
+          command: ./workdir/httpserver
+          background: true # keep service running and proceed to next step
           
       - run:
           name: Validate server is working
