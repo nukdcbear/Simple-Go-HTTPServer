@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Validate server is working
           command: |
+            sleep 5
             curl http://localhost:8080/headers > $TEST_RESULTS/headers.out
           
       - store_artifacts: # upload test summary for display in Artifacts
