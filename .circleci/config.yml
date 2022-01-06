@@ -23,7 +23,7 @@ jobs:
       
       - run:
           name: Build app
-          command: ls -l | go build -o workdir/httpserver .
+          command: ls -l
           
       - run:
           name: Validate server is working
