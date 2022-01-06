@@ -11,30 +11,29 @@ jobs:
     docker: # run the steps with Docker
       # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
       - image: circleci/golang:1.16
-    
+
     environment:
       TEST_RESULTS: /tmp/test-results
-    
+
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS # create the test results directory
-      
+
       - run:
           name: Build app
           command: |
             mkdir -p workdir
-            go mod init httpserver
             go build -o workdir/httpserver .
-      
+
       - run:
           name: Start service
           command: |
             ls -l ./workdir
             ./workdir/httpserver
           background: true # keep service running and proceed to next step
-          
+
       - run:
           name: Validate server is working
           command: |
@@ -42,7 +41,7 @@ jobs:
             curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
             curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out
             curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out
-          
+
       - store_artifacts: # upload test summary for display in Artifacts
           path: /tmp/test-results
           destination: raw-test-output
