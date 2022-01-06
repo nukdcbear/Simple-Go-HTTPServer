@@ -5,22 +5,41 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  build:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
+    docker: # run the steps with Docker
+      # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+      - image: circleci/golang:1.16
+    
+    environment:
+      TEST_RESULTS: /tmp/test-results
+    
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
+      - run: mkdir -p $TEST_RESULTS # create the test results directory
+      
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Build app
+          command: go build -o workdir/httpserver .
+          
+      - run:
+          name: Validate server is working
+          command: |
+            curl http://localhost:8080/headers > $TEST_RESULTS/headers.out
+          
+      - store_artifacts: # upload test summary for display in Artifacts
+          path: /tmp/test-results
+          destination: raw-test-output
+
+      - store_test_results: # upload test results for display in Test Summary
+          path: /tmp/test-results
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+ build-httpserver-workflow:
     jobs:
-      - say-hello
+      - build
