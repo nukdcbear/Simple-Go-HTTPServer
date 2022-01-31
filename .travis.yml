@@ -5,6 +5,7 @@ env:
 
 script:
   - mkdir -p workdir
+  - mkdir -p $TEST_RESULTS
   - go build -o workdir/httpserver .
   - ls -l ./workdir
   - ./workdir/httpserver &
