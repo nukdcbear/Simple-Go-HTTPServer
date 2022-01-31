@@ -1,0 +1,6 @@
+language: go
+
+script:
+  - mkdir -p workdir
+  - go build -o workdir/httpserver .
+  - ls -la
