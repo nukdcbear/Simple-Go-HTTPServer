@@ -1,0 +1,43 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  TEST_RESULTS: /tmp/test-results
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+
+    - name: Build
+      run: |
+        mkdir -p workdir
+        mkdir -p $TEST_RESULTS
+        go build -o workdir/httpserver .
+        ls -l ./workdir
+
+    - name: Test
+      run: |
+        ./workdir/httpserver &
+        sleep 5
+        curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
+        curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out
+        curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out
+
+    - name: Store test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test results
+        path: $TEST_RESULTS/
