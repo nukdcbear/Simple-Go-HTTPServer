@@ -1,7 +1,7 @@
 Simple static web server written in Go
 ======================================
 
-[![Go workflow][go-workflow-shield]][go-workflow]
+![Go workflow](https://github.com/nukdcbear/simple-go-httpserver/actions/workflows/go.yaml/badge.svg)
 
 [![CircleCI](https://circleci.com/gh/nukdcbear/Simple-Go-HTTPServer.svg?style=svg)](https://app.circleci.com/pipelines/github/nukdcbear/Simple-Go-HTTPServer)
 
