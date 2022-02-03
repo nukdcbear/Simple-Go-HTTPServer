@@ -30,7 +30,6 @@ jobs:
       - run:
           name: Start service
           command: |
-            chmod u+x workdir/httpserver
             ls -l ./workdir
             ./workdir/httpserver
           background: true # keep service running and proceed to next step

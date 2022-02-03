@@ -7,7 +7,6 @@ script:
   - mkdir -p workdir
   - mkdir -p $TEST_RESULTS
   - go build -o workdir/httpserver .
-    chmod u+x workdir/httpserver
   - ls -l ./workdir
   - ./workdir/httpserver &
   - sleep 5
