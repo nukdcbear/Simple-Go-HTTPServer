@@ -30,13 +30,12 @@ jobs:
 
     - name: Test
       run: |
+        go test -v ./...
         ./workdir/httpserver &
         sleep 5
         curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
-        curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out
-        curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out
 
-    - name: Store test results
+    - name: Store headers test results
       uses: actions/upload-artifact@v2
       with:
         name: Test results

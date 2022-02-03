@@ -8,9 +8,8 @@ script:
   - mkdir -p $TEST_RESULTS
   - go build -o workdir/httpserver .
   - ls -l ./workdir
+  - go test -v ./...
   - ./workdir/httpserver &
   - sleep 5
   - curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
-  - curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out
-  - curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out
-  - cat $TEST_RESULTS/hi.out
+  - cat $TEST_RESULTS/headers.out
