@@ -5,17 +5,31 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"time"
 )
 
-func hello(w http.ResponseWriter, req *http.Request) {
+var startTime time.Time
 
+func init() {
+	startTime = time.Now()
+}
+
+func uptime() time.Duration {
+	return time.Since(startTime)
+}
+
+func health(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "{\"uptime\":\"%s\"}\n", uptime())
+}
+
+func hello(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "hello\n")
 }
 
 func hi(w http.ResponseWriter, req *http.Request) {
-
 	fmt.Fprintf(w, "Hi\n")
 }
+
 func headers(w http.ResponseWriter, req *http.Request) {
 
 	for name, headers := range req.Header {
@@ -34,6 +48,7 @@ func main() {
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/hi", hi)
 	http.HandleFunc("/headers", headers)
+	http.HandleFunc("/health", health)
 	http.HandleFunc("/", defaultresp)
 
 	log.Fatal(http.ListenAndServe(":8090", nil))
