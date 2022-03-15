@@ -1,0 +1,52 @@
+- pipeline: "Build and Test Go app"
+  on: "EVENT"
+  events:
+  - type: "PUSH"
+    refs:
+    - "refs/heads/master"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+  - action: "Execute: go build -o workdir/httpserver ."
+    type: "BUILD"
+    working_directory: "/src/github.com/nukdcbear/Simple-Go-HTTPServer"
+    docker_image_name: "library/golang"
+    docker_image_tag: "1.17.6"
+    execute_commands:
+    - "export GOPATH=/"
+    - "export GO15VENDOREXPERIMENT=1"
+    - "mkdir -p blddir"
+    - "go test -v "
+    - "env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o blddir/httpserver ."
+    volume_mappings:
+    - "/:/src/github.com/nukdcbear/Simple-Go-HTTPServer"
+    cache_base_image: true
+    shell: "BASH"
+    variables:
+    - key: "TEST_RESULTS"
+      value: "/tmp/test-results"
+      type: "VAR"
+  - action: "Execute: curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out"
+    type: "BUILD"
+    working_directory: "/buddy/simple-go-httpserver"
+    docker_image_name: "library/ubuntu"
+    docker_image_tag: "latest"
+    execute_commands:
+    - "mkdir $TEST_RESULTS"
+    - "ls -l ./blddir"
+    - "./blddir/httpserver &"
+    - "sleep 5"
+    - "curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out"
+    - "curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out"
+    - "curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out"
+    setup_commands:
+    - "apt-get update && apt-get -y install curl"
+    volume_mappings:
+    - "/:/buddy/simple-go-httpserver"
+    cache_base_image: true
+    reset_entrypoint: true
+    shell: "BASH"
+    variables:
+    - key: "TEST_RESULTS"
+      value: "/tmp/test-results"
+      type: "VAR"
