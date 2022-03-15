@@ -4,12 +4,12 @@ env:
   - TEST_RESULTS=/tmp/test-results
 
 script:
-  - mkdir -p workdir
+  - mkdir -p blddir
   - mkdir -p $TEST_RESULTS
-  - go build -o workdir/httpserver .
-  - ls -l ./workdir
+  - env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o blddir/httpserver .
+  - ls -l ./blddir
   - go test -v ./...
-  - ./workdir/httpserver &
+  - ./blddir/httpserver &
   - sleep 5
   - curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
   - cat $TEST_RESULTS/headers.out
