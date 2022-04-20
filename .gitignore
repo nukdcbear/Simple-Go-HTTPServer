@@ -22,3 +22,8 @@ go.work
 
 # Build output directory
 blddir/*
+workdir/*
+output/*
+
+# Dagger/CUE-specific files
+# cue.mod
