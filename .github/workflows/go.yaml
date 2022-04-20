@@ -3,8 +3,12 @@ name: Go
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - "!**.cue"
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - "!**.cue"
 
 env:
   TEST_RESULTS: /tmp/test-results
