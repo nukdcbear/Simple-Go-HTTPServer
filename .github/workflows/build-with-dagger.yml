@@ -1,0 +1,42 @@
+name: build-with-dagger
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "**.cue"
+      - ".github/workflows/build-with-dagger.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "**.cue"
+      - ".github/workflows/build-with-dagger.yml"
+
+env:
+  DAGGER_LOG_FORMAT: plain
+
+jobs:
+  build:
+    name: "Build-with-Dagger"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Setup Go"
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+
+      - name: "Set up dagger"
+        uses: dagger/dagger-for-github@v2
+        with:
+          install-only: true
+
+      - name: "Test"
+        cmd: |
+          do test
+
+      - name: "Build"
+        cmd: |
+          do build
