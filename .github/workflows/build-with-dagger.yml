@@ -28,14 +28,11 @@ jobs:
         with:
           go-version: 1.17
 
-      - name: "Check gcc"
-        run: |
-          which gcc
-
       - name: "Test"
         uses: dagger/dagger-for-github@v2
         env:
           CGO_ENABLED: 0
+        run: which gcc
         with:
           cmds: |
             project update
