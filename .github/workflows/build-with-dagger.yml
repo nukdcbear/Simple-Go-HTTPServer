@@ -30,7 +30,7 @@ jobs:
 
       - name: "Check gcc"
         run: |
-          gcc --version
+          which gcc
 
       - name: "Test"
         uses: dagger/dagger-for-github@v2
