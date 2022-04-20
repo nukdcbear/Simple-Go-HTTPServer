@@ -34,9 +34,9 @@ jobs:
           install-only: true
 
       - name: "Test"
-        cmd: |
-          do test
+        run: |
+          dagger do test
 
       - name: "Build"
-        cmd: |
-          do build
+        run: |
+          dagger do build
