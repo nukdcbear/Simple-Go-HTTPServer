@@ -4,13 +4,13 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-      - "!**.cue"
-      - "!.github/workflows/build-with-dagger.yml"
+      - "**.cue"
+      - ".github/workflows/build-with-dagger.yml"
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - "!**.cue"
-      - "!.github/workflows/build-with-dagger.yml"
+      - "**.cue"
+      - ".github/workflows/build-with-dagger.yml"
 
 env:
   TEST_RESULTS: /tmp/test-results
