@@ -35,10 +35,12 @@ jobs:
 
       - name: "Test"
         uses: dagger/dagger-for-github@v2
-        cmd: |
-          do test
+        with:
+          cmds: |
+            do test
 
       - name: "Build"
         uses: dagger/dagger-for-github@v2
-        cmd: |
-          do build
+        with:
+          cmds: |
+            do build
