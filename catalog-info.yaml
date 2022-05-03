@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Simple-Go-HTTPServer
+  title: Simple Go HTTP Server # optional, human readable component name
+  description: Simple static web server written in Go.
+  annotations:
+    github.com/project-slug: nukdcbear/Simple-Go-HTTPServer
+spec:
+  type: service
+  owner: user:nukdcbear
+  lifecycle: experimental
