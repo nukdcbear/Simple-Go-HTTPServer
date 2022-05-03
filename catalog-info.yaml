@@ -6,6 +6,7 @@ metadata:
   description: Simple static web server written in Go.
   annotations:
     github.com/project-slug: nukdcbear/Simple-Go-HTTPServer
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   owner: user:nukdcbear
