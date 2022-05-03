@@ -1,0 +1,11 @@
+site_name: 'Simple Go HTTP Server'
+site_description: 'Simple static web server written in Go.'
+
+plugins:
+  - techdocs-core
+
+nav:
+  - Getting started:
+    - Using TechDocs: 'getting-started/technical-documentation/index.md'
+  - Developing application:
+    - Updating the server: 'developing-application/updating-server/index.md'
