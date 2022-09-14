@@ -32,7 +32,7 @@ func TestHelloWorld(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/world", nil)
 	w := httptest.NewRecorder()
 
-	hello(w, req)
+	world(w, req)
 
 	res := w.Result()
 	defer res.Body.Close()
