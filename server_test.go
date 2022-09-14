@@ -27,6 +27,25 @@ func TestHello(t *testing.T) {
 	}
 }
 
+func TestHelloWorld(t *testing.T) {
+
+	req := httptest.NewRequest(http.MethodGet, "/world", nil)
+	w := httptest.NewRecorder()
+
+	hello(w, req)
+
+	res := w.Result()
+	defer res.Body.Close()
+	data, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		t.Errorf("expected error to be nil got %v", err)
+	}
+	if string(data) != "Hello world!\n" {
+		t.Errorf("expected Hello world got %v", string(data))
+	}
+}
+
 func TestHi(t *testing.T) {
 
 	req := httptest.NewRequest(http.MethodGet, "/hi", nil)
