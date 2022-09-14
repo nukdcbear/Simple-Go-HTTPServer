@@ -26,6 +26,10 @@ func hello(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "hello\n")
 }
 
+func world(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "Hello world!\n")
+}
+
 func hi(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Hi\n")
 }
@@ -46,6 +50,7 @@ func defaultresp(w http.ResponseWriter, req *http.Request) {
 func main() {
 
 	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/world", world)
 	http.HandleFunc("/hi", hi)
 	http.HandleFunc("/headers", headers)
 	http.HandleFunc("/health", health)
