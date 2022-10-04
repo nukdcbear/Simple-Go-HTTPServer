@@ -56,5 +56,5 @@ func main() {
 	http.HandleFunc("/health", health)
 	http.HandleFunc("/", defaultresp)
 
-	log.Fatal(http.ListenAndServe(":8090", nil))
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }

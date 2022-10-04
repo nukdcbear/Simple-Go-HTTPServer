@@ -26,7 +26,7 @@
     - key: "TEST_RESULTS"
       value: "/tmp/test-results"
       type: "VAR"
-  - action: "Execute: curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out"
+  - action: "Execute: curl --retry 10 --retry-delay 1 http://localhost:3000/hello > $TEST_RESULTS/hello.out"
     type: "BUILD"
     working_directory: "/buddy/simple-go-httpserver"
     docker_image_name: "library/ubuntu"
@@ -36,9 +36,9 @@
     - "ls -l ./blddir"
     - "./blddir/httpserver &"
     - "sleep 5"
-    - "curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out"
-    - "curl --retry 10 --retry-delay 1 http://localhost:8090/hi > $TEST_RESULTS/hi.out"
-    - "curl --retry 10 --retry-delay 1 http://localhost:8090/hello > $TEST_RESULTS/hello.out"
+    - "curl --retry 10 --retry-delay 1 http://localhost:3000/headers > $TEST_RESULTS/headers.out"
+    - "curl --retry 10 --retry-delay 1 http://localhost:3000/hi > $TEST_RESULTS/hi.out"
+    - "curl --retry 10 --retry-delay 1 http://localhost:3000/hello > $TEST_RESULTS/hello.out"
     setup_commands:
     - "apt-get update && apt-get -y install curl"
     volume_mappings:
