@@ -11,5 +11,5 @@ script:
   - go test -v ./...
   - ./blddir/httpserver &
   - sleep 5
-  - curl --retry 10 --retry-delay 1 http://localhost:8090/headers > $TEST_RESULTS/headers.out
+  - curl --retry 10 --retry-delay 1 http://localhost:3000/headers > $TEST_RESULTS/headers.out
   - cat $TEST_RESULTS/headers.out
