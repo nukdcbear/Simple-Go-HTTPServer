@@ -14,6 +14,7 @@ dagger.#Plan & {
 			"./": read: {
 				contents: dagger.#FS
                 include: ["go.mod",
+                    "go.sum",
                     "server.test.go",
                     "server.go",
                     "config.yaml"
