@@ -6,9 +6,16 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"io/ioutil"
+	"gopkg.in/yaml.v3"
+	"strconv"
 )
 
 var startTime time.Time
+
+type configData struct {
+	Listenport int
+}
 
 func init() {
 	startTime = time.Now()
@@ -47,7 +54,33 @@ func defaultresp(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Well then hello, %q", html.EscapeString(req.URL.Path))
 }
 
+func readConf(filename string) (*configData, error) {
+	c := &configData{}
+	// read config file
+	yamlfile, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Printf("error: %v\n", err)
+		return c, err
+	}
+
+	err = yaml.Unmarshal(yamlfile, c)
+	if err != nil {
+		log.Printf("error: %v\n", err)
+		return c, err
+	}
+
+	return c, nil
+}
+
 func main() {
+
+	c, err := readConf("config.yaml")
+	if err != nil {
+		log.Fatalf("error: %v\n", err)
+	}
+	if c.Listenport == 0 {
+		log.Fatalf("Listenport not defined!\n")
+	}
 
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/world", world)
@@ -56,5 +89,5 @@ func main() {
 	http.HandleFunc("/health", health)
 	http.HandleFunc("/", defaultresp)
 
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Fatal(http.ListenAndServe(":" + strconv.Itoa(c.Listenport), nil))
 }

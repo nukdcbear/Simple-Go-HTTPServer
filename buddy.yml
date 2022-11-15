@@ -18,6 +18,7 @@
     - "mkdir -p blddir"
     - "go test -v "
     - "env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o blddir/httpserver ."
+    - "cp config.yaml blddir/"
     volume_mappings:
     - "/:/src/github.com/nukdcbear/Simple-Go-HTTPServer"
     cache_base_image: true

@@ -15,7 +15,8 @@ dagger.#Plan & {
 				contents: dagger.#FS
                 include: ["go.mod",
                     "server.test.go",
-                    "server.go"
+                    "server.go",
+                    "config.yaml"
                 ]
 			}
 			"./output": write: contents: actions.build.output

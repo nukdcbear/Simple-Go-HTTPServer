@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"strconv"
 )
 
 func TestHello(t *testing.T) {
@@ -100,5 +101,31 @@ func TestHealth(t *testing.T) {
 	}
 	if strings.Contains(string(data), "uptime") == false {
 		t.Errorf("expected hello got %v", string(data))
+	}
+}
+
+func TestReadConfBadFile(t *testing.T) {
+
+	c, err := readConf("configX.yaml")
+	_ = c
+
+	if err == nil {
+		t.Errorf("expected error to be not nil")
+	}
+
+	if err != nil && !strings.Contains(err.Error(), "no such file") {
+		t.Errorf("expected error \"no such file\" got %v", err.Error())
+	}
+}
+
+func TestReadConf(t *testing.T) {
+
+	c, err := readConf("config.yaml")
+
+	if err != nil {
+		t.Errorf("expected error to be nil got %v", err)
+	}
+	if !strings.Contains(strconv.Itoa(c.Listenport), "3000") {
+		t.Errorf("expected Listenport 3000 got %v", c.Listenport)
 	}
 }
