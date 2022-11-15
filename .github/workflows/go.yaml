@@ -71,5 +71,5 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/myhttpserver:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/myhttpserver:0.1.0
+            ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:0.1.0
