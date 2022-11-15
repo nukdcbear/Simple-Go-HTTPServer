@@ -51,7 +51,7 @@ jobs:
     - name: Store build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Build artifacts
+        name: Build-artifacts
         path: ./blddir
 
   build-push-image:
@@ -59,11 +59,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+
       - name: download build artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Build artifacts
+          name: Build-artifacts
           path: ./blddir
+
+      - name: Listing
+        run: |
+          pwd
+          ls -l ./blddir
 
       # setup Docker buld action
       - name: Set up Docker Buildx
