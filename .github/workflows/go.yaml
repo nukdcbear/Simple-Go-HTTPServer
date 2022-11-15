@@ -48,12 +48,22 @@ jobs:
         name: Test results
         path: ${{ env.TEST_RESULTS }}
 
+    - name: Store build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build artifacts
+        path: ./blddir
+
   build-push-image:
     name: build-push-docker-image
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Build artifacts
+          path: ./blddir
 
       # setup Docker buld action
       - name: Set up Docker Buildx
