@@ -100,7 +100,7 @@ func TestHealth(t *testing.T) {
 		t.Errorf("expected error to be nil got %v", err)
 	}
 	if strings.Contains(string(data), "uptime") == false {
-		t.Errorf("expected hello got %v", string(data))
+		t.Errorf("expected uptime got %v", string(data))
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"gopkg.in/yaml.v3"
 	"strconv"
+	"os"
 )
 
 var startTime time.Time
@@ -27,6 +28,12 @@ func uptime() time.Duration {
 
 func health(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "{\"uptime\":\"%s\"}\n", uptime())
+	hostname, err := os.Hostname()
+	if err != nil {
+		log.Printf("error: %v\n", err)
+		fmt.Fprintf(w, "{\"hostname\":\"%s\"}\n", "undefined")
+	}
+	fmt.Fprintf(w, "{\"hostname\":\"%s\"}\n", hostname)
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
