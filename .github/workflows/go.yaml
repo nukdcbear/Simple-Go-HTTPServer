@@ -70,7 +70,7 @@ jobs:
       - name: Listing
         run: |
           pwd
-          ls -l ./blddir
+          ls -l
 
       # setup Docker buld action
       - name: Set up Docker Buildx
