@@ -59,18 +59,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: Build-artifacts
           path: ./blddir
-
-      - name: Listing
-        run: |
-          pwd
-          ls -l
 
       # setup Docker buld action
       - name: Set up Docker Buildx
@@ -86,6 +82,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:latest
