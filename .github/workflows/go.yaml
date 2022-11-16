@@ -59,14 +59,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
 
       - name: download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: Build-artifacts
           path: ./blddir
+
+      - name: Determine exposed port
+        run: |
+          echo "EXPOSED_PORT=$(grep -oP '(?<=port: )\d+' config.yaml)" >> $GITHUB_ENV
 
       # setup Docker buld action
       - name: Set up Docker Buildx
@@ -83,6 +87,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          build-args: EXPOSED_PORT=${{ env.EXPOSED_PORT }}
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:latest
