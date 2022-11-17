@@ -6,11 +6,13 @@ on:
     paths-ignore:
       - "**.cue"
       - ".github/workflows/build-with-dagger.yml"
+      - "deploy-app/*"
   pull_request:
     branches: [ master ]
     paths-ignore:
       - "**.cue"
       - ".github/workflows/build-with-dagger.yml"
+      - "deploy-app/*"
 
 env:
   TEST_RESULTS: /tmp/test-results
