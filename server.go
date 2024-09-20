@@ -1,21 +1,31 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html"
 	"log"
 	"net/http"
-	"time"
-	"io/ioutil"
-	"gopkg.in/yaml.v3"
-	"strconv"
 	"os"
+	"strconv"
+	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 var startTime time.Time
 
 type configData struct {
 	Listenport int
+}
+
+type healthData struct {
+	Uptime   time.Duration `json:"uptime"`
+	Hostname string        `json:"hostname"`
+}
+
+type resultResponse struct {
+	Result string `json:"result"`
 }
 
 func init() {
@@ -27,25 +37,35 @@ func uptime() time.Duration {
 }
 
 func health(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "{\"uptime\":\"%s\"}\n", uptime())
 	hostname, err := os.Hostname()
 	if err != nil {
 		log.Printf("error: %v\n", err)
 		fmt.Fprintf(w, "{\"hostname\":\"%s\"}\n", "undefined")
 	}
-	fmt.Fprintf(w, "{\"hostname\":\"%s\"}\n", hostname)
+	data := &healthData{Uptime: uptime(), Hostname: hostname}
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		log.Printf("error: %v\n", err)
+		fmt.Printf("could not marshal json: %s\n", err)
+		return
+	}
+	fmt.Fprintf(w, "%s\n", jsonData)
+	// fmt.Fprintf(w, "{\n\"uptime\":\"%s\"\n\"hostname\":\"%s\"\n}\n", uptime(), hostname)
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "hello\n")
+	formatresp(w, "Hello")
+	// fmt.Fprintf(w, "hello\n")
 }
 
 func world(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Hello world!\n")
+	formatresp(w, "Hello world!")
+	// fmt.Fprintf(w, "Hello world!\n")
 }
 
 func hi(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Hi\n")
+	formatresp(w, "Hi")
+	// fmt.Fprintf(w, "Hi\n")
 }
 
 func headers(w http.ResponseWriter, req *http.Request) {
@@ -57,6 +77,17 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+func formatresp(w http.ResponseWriter, result string) {
+	data := &resultResponse{Result: result}
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		log.Printf("error: %v\n", err)
+		fmt.Printf("could not marshal json: %s\n", err)
+		return
+	}
+	fmt.Fprintf(w, "%s\n", jsonData)
+}
+
 func defaultresp(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "Well then hello, %q", html.EscapeString(req.URL.Path))
 }
@@ -64,7 +95,7 @@ func defaultresp(w http.ResponseWriter, req *http.Request) {
 func readConf(filename string) (*configData, error) {
 	c := &configData{}
 	// read config file
-	yamlfile, err := ioutil.ReadFile(filename)
+	yamlfile, err := os.ReadFile(filename)
 	if err != nil {
 		log.Printf("error: %v\n", err)
 		return c, err
@@ -96,5 +127,5 @@ func main() {
 	http.HandleFunc("/health", health)
 	http.HandleFunc("/", defaultresp)
 
-	log.Fatal(http.ListenAndServe(":" + strconv.Itoa(c.Listenport), nil))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(c.Listenport), nil))
 }
