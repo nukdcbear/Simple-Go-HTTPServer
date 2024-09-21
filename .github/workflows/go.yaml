@@ -2,59 +2,58 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
-      - "**.cue"
-      - ".github/workflows/build-with-dagger.yml"
-      - "deploy-app/*"
+      - '**.cue'
+      - '.github/workflows/build-with-dagger.yml'
+      - 'deploy-app/*'
   pull_request:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
-      - "**.cue"
-      - ".github/workflows/build-with-dagger.yml"
-      - "deploy-app/*"
+      - '**.cue'
+      - '.github/workflows/build-with-dagger.yml'
+      - 'deploy-app/*'
 
 env:
   TEST_RESULTS: /tmp/test-results
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.19
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
 
-    - name: Build
-      run: |
-        mkdir -p blddir
-        mkdir -p $TEST_RESULTS
-        env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o blddir/httpserver .
-        cp config.yaml blddir/
-        ls -l ./blddir
+      - name: Build
+        run: |
+          mkdir -p blddir
+          mkdir -p $TEST_RESULTS
+          env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o blddir/httpserver .
+          cp config.yaml blddir/
+          ls -l ./blddir
 
-    - name: Test
-      run: |
-        go test -v ./...
-        ./blddir/httpserver &
-        sleep 5
-        curl --retry 10 --retry-delay 1 http://localhost:3000/headers > $TEST_RESULTS/headers.out
+      - name: Test
+        run: |
+          go test -v ./...
+          ./blddir/httpserver &
+          sleep 5
+          curl --retry 10 --retry-delay 1 http://localhost:3000/headers > $TEST_RESULTS/headers.out
 
-    - name: Store headers test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: Test results
-        path: ${{ env.TEST_RESULTS }}
+      - name: Store headers test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test results
+          path: ${{ env.TEST_RESULTS }}
 
-    - name: Store build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: Build-artifacts
-        path: ./blddir
+      - name: Store build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-artifacts
+          path: ./blddir
 
   build-push-image:
     name: build-push-docker-image
@@ -94,4 +93,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:0.2.0
+            ${{ secrets.DOCKERHUB_USERNAME }}/myhttpserver:0.3.0
