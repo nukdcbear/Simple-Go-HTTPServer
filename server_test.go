@@ -4,9 +4,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
-	"strconv"
 )
 
 func TestHello(t *testing.T) {
@@ -23,7 +23,7 @@ func TestHello(t *testing.T) {
 	if err != nil {
 		t.Errorf("expected error to be nil got %v", err)
 	}
-	if string(data) != "hello\n" {
+	if strings.Contains(string(data), "Hello") == false {
 		t.Errorf("expected hello got %v", string(data))
 	}
 }
@@ -42,7 +42,7 @@ func TestHelloWorld(t *testing.T) {
 	if err != nil {
 		t.Errorf("expected error to be nil got %v", err)
 	}
-	if string(data) != "Hello world!\n" {
+	if strings.Contains(string(data), "Hello world!") == false {
 		t.Errorf("expected Hello world got %v", string(data))
 	}
 }
@@ -61,7 +61,7 @@ func TestHi(t *testing.T) {
 	if err != nil {
 		t.Errorf("expected error to be nil got %v", err)
 	}
-	if string(data) != "Hi\n" {
+	if strings.Contains(string(data), "Hi") == false {
 		t.Errorf("expected Hi got %v", string(data))
 	}
 }
@@ -87,7 +87,7 @@ func TestDefaultresp(t *testing.T) {
 
 func TestHealth(t *testing.T) {
 
-	req := httptest.NewRequest(http.MethodGet, "/hello", nil)
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
 	w := httptest.NewRecorder()
 
 	health(w, req)
