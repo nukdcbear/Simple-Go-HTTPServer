@@ -1,7 +1,9 @@
 Simple static web server written in Go
-======================================
+=====================================
 
-CI pipeline examples running GitHub Actions, CircleCI and TravisCI.
+Demoing CI pipeline examples running GitHub Actions, CircleCI and TravisCI. GitHub Actions will build a Docker image and pushing to Docker Hub.
+
+Example Kubernetes deployment files are included in the `deploy-app` directory and example Helm chart is included in the `help-support` directory.
 
 [![Go workflow](https://github.com/nukdcbear/simple-go-httpserver/actions/workflows/go.yaml/badge.svg)](https://github.com/nukdcbear/simple-go-httpserver/actions/workflows/go.yaml)
 
@@ -9,4 +11,3 @@ CI pipeline examples running GitHub Actions, CircleCI and TravisCI.
 
 [![TravisCI](https://app.travis-ci.com/nukdcbear/Simple-Go-HTTPServer.svg?branch=master)](https://app.travis-ci.com/nukdcbear/Simple-Go-HTTPServer)
 
-[![buddy pipeline](https://app.buddy.works/nukdcbear/simple-go-httpserver/pipelines/pipeline/368058/badge.svg?token=3e5a443c5f13268496bdf7c237fa8b3512435bbadd02c2236e157565fe05cd5c "buddy pipeline")](https://app.buddy.works/nukdcbear/simple-go-httpserver/pipelines/pipeline/368058)
