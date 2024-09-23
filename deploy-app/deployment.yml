@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: httpserver
-          image: dcbarringer/myhttpserver:0.2.0
+          image: dcbarringer/myhttpserver:0.3.0
           ports:
             - name: tcp
               containerPort: 3000
